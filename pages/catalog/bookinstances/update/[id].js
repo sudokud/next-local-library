@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
-import {Button, Loading} from '@geist-ui/react'
+import {Button, Loading, Spacer} from '@geist-ui/react'
 import { useForm } from 'react-hook-form'
 import useSWR from 'swr'
 
@@ -35,24 +35,22 @@ export default function UpdateBookInstance() {
   }, [reset])
 
   async function update(data){
-    console.log(data)
-    // const res = await fetch(
-    //   `${process.env.NEXT_PUBLIC_API_ENDPOINT}/bookinstances/${id}`,
-    //   {
-    //     body: JSON.stringify({
-    //     status: data.status,
-    //     imprint: data.value,
-    //     due_back: data.due_back,
-    //     book: data.book,
-    //     }),
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     method: 'PUT'
-    //   }
-    // )
-    // const result = await res.json()
-    // router.push(`/catalog/bookinstances/${id}`)
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/bookinstances/${id}`,
+      {
+        body: JSON.stringify({
+        status: data.status,
+        imprint: data.value,
+        due_back: data.due_back,
+        book: data.book,
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'PUT'
+      }
+    )
+    router.push(`/catalog/bookinstances/${id}`)
   }
   return (
     <div>
@@ -79,6 +77,7 @@ export default function UpdateBookInstance() {
             </select>
            </div>
            }
+           <Spacer y={1}/>
            <div>
            <label htmlFor="status">Status</label>
             <select type="text" id="status" {...register("status")}>
@@ -91,14 +90,17 @@ export default function UpdateBookInstance() {
             })}
             </select>
            </div>
+           <Spacer y={1}/>
            <div>
             <label htmlFor="imprint">Imprint</label>
             <input type="text" id="imprint" {...register("imprint")}/>
            </div>
+           <Spacer y={1}/>
            <div>
             <label htmlFor="due_back">Due back</label>
             <input type="date"  id="due_back" {...register("due_back")}/>
            </div>
+           <Spacer y={2}/>
            <Button htmlType="submit" type="success" ghost> Submit </Button>
         </form>
       </section>

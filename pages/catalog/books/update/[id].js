@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
-import { Button, Loading } from '@geist-ui/react'
+import { Button, Loading, Spacer } from '@geist-ui/react'
 import { withRouter } from 'next/router'
 import useGenres from '../../../../hooks/useGenres'
 import useAuthors from '../../../../hooks/useAuthors'
@@ -69,12 +69,13 @@ function UpdateBook({ router }) {
          Update Book
         </h1>
         {
-          genresIsError || AuthorsIsError ? "error" : genresIsLoading || authorsIsLoading ? <Loading /> :  
+          genresIsError || AuthorsIsError ? "an error occured" : genresIsLoading || authorsIsLoading ? <Loading /> :  
         <form id="Book-update-form" onSubmit={handleSubmit(updateBook)}>
            <div>
             <label htmlFor="title">Title</label>
             <input type="text"  id="title" {...register("title")}/>
            </div>
+           <Spacer y={1}/>
            <div>
             <label htmlFor="author">Author</label>
             <select type="text"  id="author" {...register("author")}>
@@ -87,14 +88,17 @@ function UpdateBook({ router }) {
               })}
             </select>
            </div>
+           <Spacer y={1}/>
            <div>
             <label htmlFor="summary" >Summary</label>
             <textarea id="summary" {...register("summary")}/>
            </div>
+           <Spacer y={1}/>
            <div>
             <label htmlFor="ISBN">ISBN</label>
             <input type="text" id="ISBN" {...register("ISBN")}/>
            </div>
+           <Spacer y={1}/>
            <div>
              {genres.length > 0 ?
                genres.map((genre) => {
@@ -113,6 +117,7 @@ function UpdateBook({ router }) {
               : null
              }
            </div>
+           <Spacer y={2}/>
            <Button auto htmlType="submit" type="success" ghost>Submit</Button>
         </form>
         }

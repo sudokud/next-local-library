@@ -8,7 +8,7 @@ const AppNav = () => {
          <nav>
             <ul>
                <li>
-                  <Link href="/">
+                  <Link href="/catalog">
                      <a>Home</a>
                   </Link>
                </li>

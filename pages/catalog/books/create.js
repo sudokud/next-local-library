@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 import useSWR from 'swr'
-import {Button} from '@geist-ui/react'
+import {Button, Loading, Spacer} from '@geist-ui/react'
 
 
 export default function CreateBook() {
@@ -52,13 +52,14 @@ export default function CreateBook() {
         </h1>
         {
          author_error || genre_error ? "An error has occurred."
-         : !authors || !initialGenres ? "Loading..."
+         : !authors || !initialGenres ? <Loading/>
          :
         <form id="Book-form" onSubmit={createBook}>
            <div>
             <label htmlFor="title">Title</label>
             <input type="text" name="title" id="title" required/>
            </div>
+           <Spacer y={1}/>
            <div>
             <label htmlFor="author">Author</label>
             <select type="text" name="author" id="author" required>
@@ -71,10 +72,12 @@ export default function CreateBook() {
             })}
             </select>
            </div>
+           <Spacer y={1}/>
            <div>
             <label htmlFor="summary">Summary</label>
             <textarea name="summary" id="summary" required/>
            </div>
+           <Spacer y={1}/>
            <div>
            {initialGenres.map((genre) => {
                return(
@@ -85,10 +88,12 @@ export default function CreateBook() {
                )
             })}
            </div>
+           <Spacer y={1}/>
            <div>
             <label htmlFor="ISBN">ISBN</label>
             <input type="text" name="ISBN" id="ISBN" required/>
            </div>
+           <Spacer y={2}/>
            <Button htmlType="submit" type="success" ghost>Submit</Button>
         </form>
       }

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 import useSWR from 'swr'
-import {Button} from '@geist-ui/react'
+import {Button, Loading, Spacer} from '@geist-ui/react'
 
 const BookInstanceStatus = [
    "Available",
@@ -48,7 +48,7 @@ export default function CreateBookInstance() {
         </h1>
         {
          book_error ? "An error has occurred."
-         : !books ? "Loading..."
+         : !books ? <Loading />
          :
         <form id="bookinstance-form" onSubmit={createBookinstance}>
            <div>
@@ -63,6 +63,7 @@ export default function CreateBookInstance() {
             })}
             </select>
            </div>
+           <Spacer y={1} />
            <div>
            <label htmlFor="status">Status</label>
             <select type="text" name="status" id="status" required>
@@ -75,14 +76,17 @@ export default function CreateBookInstance() {
             })}
             </select>
            </div>
+           <Spacer y={1}/>
            <div>
             <label htmlFor="imprint">Imprint</label>
             <input type="text" name="imprint" id="imprint" />
            </div>
+           <Spacer y={1}/>
            <div>
             <label htmlFor="due_back">Due back</label>
             <input type="date" name="due_back" id="due_back" />
            </div>
+           <Spacer y={2}/>
            <Button htmlType="submit" type="success" ghost>Submit</Button>
         </form>
       }

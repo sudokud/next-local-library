@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import useSWR from 'swr'
-
+import { Loading } from '@geist-ui/react'
 export default function Home() {
   const fetcher = (...args) => fetch(...args).then(res => res.json())
   const { data: books, error: book_error } = useSWR(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/count`, fetcher)
-  const { data: authors, error: author_error } = useSWR('http://localhost:1337/authors/count', fetcher)
-  const { data: genres, error: genre_error } = useSWR('http://localhost:1337/genres/count', fetcher)
-  const { data: copies, error: copies_error } = useSWR('http://localhost:1337/bookinstances/count', fetcher)
-  const { data: copies_available, error: copies_available_error } = useSWR('http://localhost:1337/bookinstances/count?status=Available', fetcher)
+  const { data: authors, error: author_error } = useSWR(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors/count`, fetcher)
+  const { data: genres, error: genre_error } = useSWR(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres/count`, fetcher)
+  const { data: copies, error: copies_error } = useSWR(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/bookinstances/count`, fetcher)
+  const { data: copies_available, error: copies_available_error } = useSWR(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/bookinstances/count?status=Available`, fetcher)
   return (
     <div>
       <Head>
@@ -21,7 +21,7 @@ export default function Home() {
         </h1>
         {
         book_error || author_error || genre_error || copies_error || copies_available_error ? "An error has occurred."
-        : !books || !authors || !genres || !copies || !copies_available ? "Loading..."
+        : !books || !authors || !genres || !copies || !copies_available ? <Loading/>
         :
          <div>
             <h3>Books: {books}</h3>

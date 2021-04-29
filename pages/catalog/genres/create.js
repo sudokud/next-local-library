@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Button } from '@geist-ui/react'
+import { Button, Spacer } from '@geist-ui/react'
 
 export default function CreateGenre() {
    const router = useRouter()
@@ -36,8 +36,9 @@ export default function CreateGenre() {
         <form id="genre-form" onSubmit={createGenre}>
           <div>
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" placeholder="name" required/>
+            <input type="text" name="name" id="name" required/>
           </div>
+          <Spacer y={2}/>
           <Button type="success" htmlType="submit">Submit</Button>
         </form>
       </section>

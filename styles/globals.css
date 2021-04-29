@@ -23,12 +23,32 @@ aside {
 nav{
   height: 100%;
   border-right: 1px solid #eaeaea;
+  padding-left: 3vw;
 }
 
 form {
   padding-top:3vh;
+  width: 66%;
+  margin: auto;
 }
-
+input:not([type="checkbox"]),
+select,
+textarea {
+  width: 100%;
+  border-radius: 5px;
+  color: #000;
+  border: 1px solid #eaeaea;
+  padding:8px;
+}
+input[type="checkbox"]{
+  margin-right: 1.2vw;
+}
+label {
+  color: #565656;
+}
+input:focus {
+  border: 1px solid #666;
+}
 /* book instance status classes */
 .Available {
   color: limegreen;

@@ -8,11 +8,11 @@ const Author = ({author}) => {
   const router = useRouter()
   const { id } = router.query
   const [state, setState] = useState(false)
+ 
   const handler = () => setState(true)
   const closeHandler = (event) => {
     setState(false)
   }
-  console.log(author)
   const lifeSpan = (() => {
     let lifetime_string = '';
     if (author.date_of_birth) {
@@ -66,9 +66,9 @@ const Author = ({author}) => {
           </Modal.Title>
           <Modal.Content>
             <ul>
-              {author.books.map((book)=>{
+              {author.books.map(({title, id})=>{
                 return(
-                  <li>{book.title}</li>
+                  <li key={id}>{title}</li>
                 )
               })}
             </ul>

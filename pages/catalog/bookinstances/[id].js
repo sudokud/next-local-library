@@ -3,6 +3,7 @@ import { Divider, Button, Modal } from '@geist-ui/react'
 import {useRouter} from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
+import {DateTime} from 'luxon'
 
 const BookInstance = ({bookinstance}) => {
    const router = useRouter()
@@ -39,9 +40,11 @@ const BookInstance = ({bookinstance}) => {
             <Link href={`/catalog/books/${bookinstance.book.id}`}><a>{bookinstance.book.title}</a></Link>
             <h2> imprint </h2> <p> {bookinstance.imprint} </p>
             <h2> status </h2> <p className={bookinstance.status}> {bookinstance.status} </p>
-            <h2> due back </h2> <p> {bookinstance.due_back} </p>
+            {bookinstance.due_back &&
+               <><h2> due back </h2> <p> {DateTime.fromISO(bookinstance.due_back).toLocaleString(DateTime.DATETIME_MED)} </p></>
+            }
             <Divider />
-            <Button auto onClick={handler} type="error">Delete instance</Button>
+            <Button style={{marginRight:"1.5vw"}} auto onClick={handler} type="error" ghost>Delete instance</Button>
             <Link href={`/catalog/bookinstances/update/${bookinstance.id}`}>
                <a>
                   <Button auto type="default">Update instance</Button>

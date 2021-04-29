@@ -4,7 +4,7 @@ module.exports = {
        {
          source: '/',
          destination: '/catalog',
-         permanent: false,
+         permanent: true,
        },
      ]
    },
