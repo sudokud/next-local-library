@@ -6,7 +6,7 @@ import useGenres from '../../../../hooks/useGenres'
 import useAuthors from '../../../../hooks/useAuthors'
 import { useForm } from "react-hook-form"
 
-function UpdateBook({ router }) {
+function UpdateBook({ router, book }) {
   const { id } = router.query
   // fetching book and genres
   const {genres, isLoading: genresIsLoading, isError: genresIsError} = useGenres()
@@ -15,15 +15,6 @@ function UpdateBook({ router }) {
   const { register, handleSubmit, reset } = useForm({mode: "onChange"});
 
   useEffect(async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/${id}`);
-    if (!res.ok) {
-      const message = `An error has occured: ${res.status}`;
-      throw new Error(message);
-    }
-    const book = await res.json()
-    // reset
-    // we map the book genres to a new array that contain onlly the id of the genres
-    // the we pass the new vreated array to reset
     const bookGenres = book.genres.map((genre) => {
       let ID = genre.id.toString()
       return ID
@@ -127,4 +118,27 @@ function UpdateBook({ router }) {
 }
 
 export default withRouter(UpdateBook)
+
+
+
+export async function getStaticPaths() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books`)
+  const books = await res.json()
+  const paths = books.map((book) => ({
+    params: { id: book.id.toString() },
+  }))
+
+  return { paths, fallback: false }
+}
+
+export async function getStaticProps({ params }) {
+  const ID = params.id
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/${ID}`)
+  const book = await res.json()
+  return {
+    props: {
+      book,
+    },
+  }
+}
 

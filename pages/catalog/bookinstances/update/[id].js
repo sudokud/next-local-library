@@ -5,7 +5,7 @@ import {Button, Loading, Spacer} from '@geist-ui/react'
 import { useForm } from 'react-hook-form'
 import useSWR from 'swr'
 
-export default function UpdateBookInstance() {
+export default function UpdateBookInstance({bookinstance}) {
   const BookInstanceStatus = [
     "Available",
     "Maintenance",
@@ -19,12 +19,6 @@ export default function UpdateBookInstance() {
   const { register, handleSubmit, reset } = useForm({mode: "onChange"});
 
   useEffect(async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/bookinstances/${id}`);
-    if (!res.ok) {
-      const message = `An error has occured: ${res.status}`;
-      throw new Error(message);
-    }
-    const bookinstance = await res.json()
     // reset
     reset({
       status: bookinstance.status,
@@ -106,4 +100,27 @@ export default function UpdateBookInstance() {
       </section>
     </div>
   )
+}
+
+
+
+export async function getStaticPaths() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/bookinstances`)
+  const bookinstances = await res.json()
+  const paths = bookinstances.map((bookinstance) => ({
+    params: { id: bookinstance.id.toString() },
+  }))
+
+  return { paths, fallback: false }
+}
+
+export async function getStaticProps({ params }) {
+  const ID = params.id
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/bookinstances/${ID}`)
+  const bookinstance = await res.json()
+  return {
+    props: {
+      bookinstance,
+    },
+  }
 }

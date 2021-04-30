@@ -18,7 +18,7 @@ export default function Genres({ data }) {
                   <Grid key={genre.id}>
                     <Card>
 
-                    <Link href={`/catalog/genres/${genre.id}`}>
+                    <Link href={`/catalog/genres/details/${genre.id}`}>
                       <a>
                         <h3>{genre.name}</h3>
                       </a>

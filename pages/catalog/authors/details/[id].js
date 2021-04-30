@@ -51,7 +51,7 @@ const Author = ({author}) => {
       </ul>
       <Divider />
       <Button style={{marginRight:"1.5vw"}}  auto onClick={handler} type="error">Delete author</Button>
-      <Link href={`/catalog/authors/update/${author.id}`}>
+      <Link href='/catalog/authors/update/[id]' as={`/catalog/authors/update/${author.id}`}>
         <a>
           <Button auto type="default">Update author</Button>
         </a>

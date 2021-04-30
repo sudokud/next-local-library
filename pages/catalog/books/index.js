@@ -17,7 +17,7 @@ export default function Books({data}) {
                return(
                  <Grid key={book.id}>
                   <Card>
-                    <Link style={{ width: '100%'}} href={`/catalog/books/${book.id}`} >
+                    <Link style={{ width: '100%'}} href="/catalog/books/details/[id]" as={`/catalog/books/details/${book.id}`} >
                       <a>
                           <h4>{book.title}</h4>
                       </a>

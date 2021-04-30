@@ -18,7 +18,7 @@ export default function Authors({ data }) {
                return(
                   <Grid key={author.id}>
                      <Card>
-                     <Link href={`/catalog/authors/${author.id}`}>
+                     <Link href={`/catalog/authors/details/${author.id}`}>
                         <a>
                            <h3>{author.family_name} {author.first_name}</h3>
                         </a>

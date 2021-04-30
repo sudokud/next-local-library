@@ -3,18 +3,12 @@ import Head from 'next/head'
 import { Button, Spacer } from '@geist-ui/react'
 import { withRouter } from 'next/router'
 import { useForm } from "react-hook-form"
-function UpdateAuthor({ router }) {
+
+function UpdateAuthor({ router, author }) {
   let { id } = router.query
   const { register, handleSubmit, reset } = useForm({mode: "onChange"});
 
   useEffect(async () => {
-    console.log("history state",window.history.state.as)
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors/${id}`);
-    if (!res.ok) {
-      const message = `An error has occured: ${res.status}`;
-      throw new Error(message);
-    }
-    const author = await res.json()
     reset({
       first_name: author.first_name,
       family_name: author.family_name,
@@ -83,3 +77,26 @@ function UpdateAuthor({ router }) {
 
 
 export default withRouter(UpdateAuthor)
+
+
+
+
+export async function getStaticPaths() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors`)
+  const authors = await res.json()
+  const paths = authors.map((author) => ({
+    params: { id: author.id.toString() },
+  }))
+  return { paths, fallback: false }
+}
+
+export async function getStaticProps({ params }) {
+  const ID = params.id
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors/${ID}`)
+  const author = await res.json()
+  return {
+    props: {
+      author,
+    },
+  }
+}

@@ -4,19 +4,11 @@ import { Button, Input, Spacer } from '@geist-ui/react'
 import { withRouter } from 'next/router'
 import { useForm } from "react-hook-form"
 
-function UpdateGenre({ router }) {
+function UpdateGenre({ router, genre }) {
   let id = router.query.id
   const { register, handleSubmit, reset } = useForm({mode: "onChange"});
 
   useEffect(async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres/${id}`);
-    if (!res.ok) {
-      const message = `An error has occured: ${res.status}`;
-      throw new Error(message);
-    }
-    const genre = await res.json()
-    // reset
-    console.log(genre)
     reset({
       genre: genre.name,
     });
@@ -66,3 +58,24 @@ function UpdateGenre({ router }) {
 
 
 export default withRouter(UpdateGenre)
+
+
+export async function getStaticPaths() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres`)
+  const genres = await res.json()
+  const paths = genres.map((genre) => ({
+    params: { id: genre.id.toString() },
+  }))
+  return { paths, fallback: false }
+}
+
+export async function getStaticProps({ params }) {
+  const ID = params.id
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres/${ID}`)
+  const genre = await res.json()
+  return {
+    props: {
+      genre,
+    },
+  }
+}

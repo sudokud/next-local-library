@@ -23,7 +23,7 @@ export default function Bookinstances({data}) {
                 <Grid key={copie.id}>
                   <Card>
                   <h4>
-                    <Link href={`/catalog/bookinstances/${copie.id}`}>
+                    <Link as={`/catalog/bookinstances/details/${copie.id}`} href='/catalog/bookinstances/details/[id]'>
                       <a>
                         {copie.book ? copie.book.title : "copie has no book (bug)"}
                       </a>
