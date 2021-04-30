@@ -33,7 +33,7 @@ export default function Books({data}) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/?_sort=updated_at:DESC`)
   const data = await res.json()
 

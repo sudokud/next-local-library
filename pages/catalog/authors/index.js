@@ -46,7 +46,7 @@ export default function Authors({ data }) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors`)
   const data = await res.json()
 

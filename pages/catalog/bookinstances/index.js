@@ -45,7 +45,7 @@ export default function Bookinstances({data}) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/bookinstances`)
   const data = await res.json()
 
