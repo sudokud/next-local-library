@@ -114,23 +114,3 @@ const Book = () => {
 }
 
 export default Book
-
-// export async function getStaticPaths() {
-//    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books`)
-//    const books = await res.json()
-//    const paths = books.map((book) => ({
-//      params: { id: book.id.toString() },
-//    }))
-//    return { paths, fallback: false }
-//  }
-
-// export async function getStaticProps({ params }) {
-//    const ID = params.id
-//    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/${ID}`)
-//    const initialBook = await res.json()
-//    return {
-//      props: {
-//        initialBook,
-//      },
-//    }
-//  }

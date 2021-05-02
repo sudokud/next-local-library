@@ -1,8 +1,11 @@
-import { Card, Grid, Divider } from '@geist-ui/react'
+import { Card, Grid, Divider, Loading } from '@geist-ui/react'
 import Head from 'next/head'
 import Link from 'next/link'
+import useAuthors from '@/hooks/useAuthors'
 
-export default function Authors({ data }) {
+export default function Authors({data}) {
+  const {authors, isLoading, isError} = useAuthors({initialData: data})
+
   return (
     <div>
       <Head>
@@ -14,7 +17,8 @@ export default function Authors({ data }) {
          Authors
         </h1>
         <Grid.Container gap={2}>{
-            data.map((author) => {
+           isError ? <div>an error occured</div> : isLoading ? <Loading /> :
+            authors.map((author) => {
                return(
                   <Grid key={author.id}>
                      <Card>
@@ -46,17 +50,13 @@ export default function Authors({ data }) {
   )
 }
 
-export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors`)
-  const data = await res.json()
-
-  if (!data) {
-    return {
-      notFound: true,
-    }
-  }
-
-  return {
-    props: {data}, // will be passed to the page component as props
-  }
-}
+export async function getStaticProps(context) {
+   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors`)
+   const data = await res.json()
+   return {
+     props: {
+       data,
+     },
+    revalidate: 1
+   }
+ }

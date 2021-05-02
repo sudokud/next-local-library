@@ -99,8 +99,7 @@ export async function getStaticPaths() {
  }
 
 export async function getStaticProps({ params }) {
-   const ID = params.id
-   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors/${ID}`)
+   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors/${params.id}`)
    const author = await res.json()
    return {
      props: {

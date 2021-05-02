@@ -1,11 +1,9 @@
 import useSWR from 'swr'
+import Fetcher from '../utils/Fetcher'
 
-const fetcher = (...args) => fetch(...args).then(res => res.json())
+function useAuthors ({initialData}) {
+   const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors`, Fetcher, {initialData: initialData})
 
-function useAuthors (id) {
-  let suffix = id ? `authors/${id}` : `authors`
-   const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/${suffix}`, fetcher)
- 
    return {
      authors: data,
      isLoading: !error && !data,

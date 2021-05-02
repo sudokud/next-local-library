@@ -1,27 +1,29 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Button, Spacer } from '@geist-ui/react'
+import { useForm } from 'react-hook-form'
 
 export default function CreateGenre() {
    const router = useRouter()
-   async function createGenre(event){
-      event.preventDefault()
-      const res = await fetch(
-         `${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres`,
-         {
-           body: JSON.stringify({
-            name: event.target.name.value,
-           }),
-           headers: {
-             'Content-Type': 'application/json'
-           },
-           method: 'POST'
-         }
-      )
-      // const result = await res.json()
-      event.target.reset()
-      router.push('/catalog/genres')
-   
+  const { register, handleSubmit, reset } = useForm({mode: "onChange"});
+
+   async function createGenre(data){
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres`,
+        {
+          body: JSON.stringify({
+          name: data.name,
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'POST'
+        }
+    )
+    //do something with the status
+    console.log("create genre", res.status)
+    //redirect to all genres
+    router.push('/catalog/genres')
    }
   return (
     <div>
@@ -33,13 +35,13 @@ export default function CreateGenre() {
         <h1>
          New Genre
         </h1>
-        <form id="genre-form" onSubmit={createGenre}>
+        <form id="genre-form" onSubmit={handleSubmit(createGenre)}>
           <div>
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" required/>
+            <input type="text" name="name" id="name" {...register("name")}/>
           </div>
           <Spacer y={2}/>
-          <Button type="success" htmlType="submit">Submit</Button>
+          <Button type="success" htmlType="submit" ghost>Submit</Button>
         </form>
       </section>
     </div>

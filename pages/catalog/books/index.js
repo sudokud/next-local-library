@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { Card, Grid } from '@geist-ui/react'
-export default function Books({data}) {  
+export default function Books({data, notFound}) {  
   return (
     <div>
       <Head>
@@ -12,6 +12,7 @@ export default function Books({data}) {
         <h1>
          Books
         </h1>
+        {notFound ? <div>not found</div> :
         <Grid.Container gap={1}>{
             data.map((book) => {
                return(
@@ -28,6 +29,7 @@ export default function Books({data}) {
                )
             })
          }</Grid.Container>
+        }
       </section>
     </div>
   )

@@ -11,7 +11,7 @@ function UpdateBook({ router, initialBook }) {
   const { id } = router.query
   // fetching book and genres to populate Author field and display all the genres.
   const {genres, isLoading: genresIsLoading, isError: genresIsError} = useGenres()
-  const {authors, isLoading: authorsIsLoading, isError: AuthorsIsError} = useAuthors()
+  const {authors, isLoading: authorsIsLoading, isError: AuthorsIsError} = useAuthors({initialData: null})
   const { book, isError, isLoading } = useBook(router.query.id ? router.query.id : null, initialBook)
 
   // register form fields 

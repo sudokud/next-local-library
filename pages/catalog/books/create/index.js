@@ -1,33 +1,26 @@
 import Head from 'next/head'
-import {useRouter} from 'next/router'
-import useSWR from 'swr'
-import {Button, Loading, Spacer} from '@geist-ui/react'
-
+import { useRouter } from 'next/router'
+import { Button, Loading, Spacer } from '@geist-ui/react'
+import useAuthors from '@/hooks/useAuthors'
+import useGenres from '@/hooks/useGenres'
+import { useForm } from "react-hook-form"
 
 export default function CreateBook() {
    const router = useRouter()
-   const fetcher = (...args) => fetch(...args).then(res => res.json())
-   const { data: authors, error: author_error } = useSWR(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors`, fetcher)
-   const { data: initialGenres, error: genre_error } = useSWR(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres/`, fetcher)
-   let checkedGenres = []
-   let handleCheckbox = (event) => {
-      if(event.target.checked){
-         checkedGenres.push({id: event.target.id, value: event.target.value})
-      }else{
-         checkedGenres.pop({id: event.target.id, value: event.target.value})
-      }
-   }
-   async function createBook(event){
-      event.preventDefault()
+   const { authors, isError: isAuthorError, isLoading: authorsIsLoading } = useAuthors({initialData: null})
+   const { genres, isError: isGenreError, isLoading: genresIsLoading } = useGenres()
+   const { register, handleSubmit, reset } = useForm({mode: "onChange"});
+
+   async function createBook(data){
       const res = await fetch(
          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/books`,
          {
            body: JSON.stringify({
-            title: event.target.title.value,
-            author: event.target.author.value,
-            summary: event.target.summary.value,
-            genres: checkedGenres,
-            ISBN: event.target.ISBN.value,
+            title: data.title,
+            author: data.author.id,
+            summary: data.summary,
+            genres: data.genre,
+            ISBN: data.ISBN,
            }),
            headers: {
              'Content-Type': 'application/json'
@@ -35,10 +28,8 @@ export default function CreateBook() {
            method: 'POST'
          }
       )
-      const result = await res.json()
-      event.target.reset()
-      router.push(`/catalog/books/${result.id}`)
-   
+      // const result = await res.json()
+      router.push(`/catalog/books/details/${router.query.id}`)
    }
   return (
     <div>
@@ -51,18 +42,18 @@ export default function CreateBook() {
          New Book
         </h1>
         {
-         author_error || genre_error ? "An error has occurred."
-         : !authors || !initialGenres ? <Loading/>
+         isAuthorError || isGenreError ? "An error has occurred."
+         : authorsIsLoading || genresIsLoading ? <Loading />
          :
-        <form id="Book-form" onSubmit={createBook}>
+        <form id="Book-form" onSubmit={handleSubmit(createBook)}>
            <div>
             <label htmlFor="title">Title</label>
-            <input type="text" name="title" id="title" required/>
+            <input type="text" name="title" id="title" {...register('title')}/>
            </div>
            <Spacer y={1}/>
            <div>
             <label htmlFor="author">Author</label>
-            <select type="text" name="author" id="author" required>
+            <select type="text" name="author" id="author" {...register('author')}>
             {authors.map((author) => {
                return(
                   <option key={author.id} value={author.id}>
@@ -75,23 +66,31 @@ export default function CreateBook() {
            <Spacer y={1}/>
            <div>
             <label htmlFor="summary">Summary</label>
-            <textarea name="summary" id="summary" required/>
+            <textarea name="summary" id="summary" {...register('summary')}/>
            </div>
            <Spacer y={1}/>
            <div>
-           {initialGenres.map((genre) => {
-               return(
-                  <div key={genre.id}>
-                     <input type='checkbox' name="genre" value={genre.name} id={genre.id} onChange={handleCheckbox}/>
-                     <label htmlFor={genre.id}>{genre.name}</label>
+             {genres.length > 0 ?
+               genres.map((genre) => {
+                 return(
+                   <div key={genre.id}>
+                      <input
+                        type="checkbox"
+                        value={genre.id}
+                        id={genre.id}
+                        {...register("genre")}
+                      />
+                    <label htmlFor={genre.id}>{genre.name}</label>
                   </div>
-               )
-            })}
+                 )
+               })
+              : null
+             }
            </div>
            <Spacer y={1}/>
            <div>
             <label htmlFor="ISBN">ISBN</label>
-            <input type="text" name="ISBN" id="ISBN" required/>
+            <input type="text" name="ISBN" id="ISBN" {...register('ISBN')}/>
            </div>
            <Spacer y={2}/>
            <Button htmlType="submit" type="success" ghost>Submit</Button>
