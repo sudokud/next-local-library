@@ -1,19 +1,20 @@
-import { Button, Divider, Modal, Note } from '@geist-ui/react'
+import { Button, Divider, Loading, Modal, Note } from '@geist-ui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-
-const Book = ({ book }) => {
+import useBook from '../../../../hooks/useBook'
+const Book = ({initialBook}) => {
    const router = useRouter()
-   const { id } = router.query
    const [state, setState] = useState(false)
-   // const [error, setError] = useState(false)
+
+   const { book, isError, isLoading } = useBook(router.query.id ? router.query.id : null, initialBook)
+
    const handler = () => setState(true)
    const closeHandler = (event) => {
       setState(false)
    }
    async function DeleteBook() {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/${id}`,
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/${router.query.id}`,
       {
          method:"DELETE",
          headers: {
@@ -21,13 +22,13 @@ const Book = ({ book }) => {
          },
          body: null
       })
-      // setError(!res.ok)
-      // const data = await res.json();
       setState(false)
       router.push(`/catalog/books`)
    }
   return (
     <section className="main-section">
+      {
+      isError ? "an error occured !" : isLoading ? <Loading /> :
       <div>
          <div>
             <h2>Title:</h2><p>{book.title}</p>
@@ -75,7 +76,6 @@ const Book = ({ book }) => {
             </ul>
          </div>
          <Divider />
-         {/* show delete button only if book don't have instance(s) */}
          <Button style={{marginRight:"1.5vw"}} auto onClick={handler} type="error">Delete book</Button>
          <Link href={`/catalog/books/update/${book.id}`}>
             <a>
@@ -108,6 +108,7 @@ const Book = ({ book }) => {
             <Modal.Action disabled={book.bookinstances.length > 0} onClick={DeleteBook}>Confirm</Modal.Action>
          </Modal>
       </div>
+      }
     </section>
   )
 }
@@ -115,34 +116,21 @@ const Book = ({ book }) => {
 export default Book
 
 export async function getStaticPaths() {
-   // Call an external API endpoint to get books
    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books`)
    const books = await res.json()
- 
-   // Get the paths we want to pre-render based on books
    const paths = books.map((book) => ({
      params: { id: book.id.toString() },
    }))
- 
-   // We'll pre-render only these paths at build time.
-   // { fallback: false } means other routes should 404.
    return { paths, fallback: false }
  }
 
 export async function getStaticProps({ params }) {
-   // Call an external API endpoint to get books.
-   // You can use any data fetching library
-   // params contains the book `id`.
-  // If the route is like /book/1, then params.id is 1
    const ID = params.id
    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/${ID}`)
-   const book = await res.json()
- 
-   // By returning { props: { books } }, the Book component
-   // will receive `book` as a prop at build time
+   const initialBook = await res.json()
    return {
      props: {
-       book,
+       initialBook,
      },
    }
  }

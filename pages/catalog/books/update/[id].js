@@ -2,19 +2,22 @@ import { useEffect } from 'react'
 import Head from 'next/head'
 import { Button, Loading, Spacer } from '@geist-ui/react'
 import { withRouter } from 'next/router'
-import useGenres from '../../../../hooks/useGenres'
-import useAuthors from '../../../../hooks/useAuthors'
+import useGenres from '@/hooks/useGenres'
+import useAuthors from '@/hooks/useAuthors'
+import useBook from '@/hooks/useBook'
 import { useForm } from "react-hook-form"
 
-function UpdateBook({ router, book }) {
+function UpdateBook({ router, initialBook }) {
   const { id } = router.query
-  // fetching book and genres
+  // fetching book and genres to populate Author field and display all the genres.
   const {genres, isLoading: genresIsLoading, isError: genresIsError} = useGenres()
   const {authors, isLoading: authorsIsLoading, isError: AuthorsIsError} = useAuthors()
+  const { book, isError, isLoading } = useBook(router.query.id ? router.query.id : null, initialBook)
+
   // register form fields 
   const { register, handleSubmit, reset } = useForm({mode: "onChange"});
 
-  useEffect(async () => {
+  useEffect(() => {
     const bookGenres = book.genres.map((genre) => {
       let ID = genre.id.toString()
       return ID
@@ -46,8 +49,7 @@ function UpdateBook({ router, book }) {
           })
         }
     )
-    console.log(res.json())
-    router.push(`/catalog/books/${id}`)
+    router.push(`/catalog/books/details/${id}`)
   }
   return (
     <div>
@@ -132,12 +134,11 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const ID = params.id
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/${ID}`)
-  const book = await res.json()
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/${params.id}`)
+  const initialBook = await res.json()
   return {
     props: {
-      book,
+      initialBook,
     },
   }
 }
