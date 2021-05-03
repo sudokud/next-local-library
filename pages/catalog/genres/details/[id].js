@@ -7,7 +7,7 @@ import useGenre from '@/hooks/useGenre'
 const Genre = ({ data }) => {
   const router = useRouter()
   const { id } = router.query
-  const {genre, isError, isLoading} = useGenre(id, {initialData: data})
+  const {genre, isError, isLoading} = useGenre(id)
   const [toggleModal, setToggleModal] = useState(false)
   const handler = () => setToggleModal(true)
   const closeHandler = () => {
