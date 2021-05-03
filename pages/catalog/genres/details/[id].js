@@ -1,7 +1,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
-import { Divider, Button, Modal, Note, Spacer } from '@geist-ui/react'
-const Genre = ({genre}) => {
+import { useRouter } from 'next/router'
+import { Divider, Button, Modal, Note, Spacer, Loading } from '@geist-ui/react'
+import useGenre from '@/hooks/useGenre'
+
+const Genre = ({ data }) => {
+  const router = useRouter()
+  const { id } = router.query
+  const {genre, isError, isLoading} = useGenre(id, {initialData: data})
   const [toggleModal, setToggleModal] = useState(false)
   const handler = () => setToggleModal(true)
   const closeHandler = () => {
@@ -22,25 +28,29 @@ const Genre = ({genre}) => {
  }
   return (
     <section className="main-section">
-      <div>
-        <h2>Name:</h2>
-        <p>{genre.name}</p>
-      </div>
-      <Spacer y={1} />
-      <div>
-        <h2>Books:</h2>
-        <ul>
-          {
-          genre.books.map(({title, id}) => {
-              return(
-                <li key={id}>
-                  <p>{title}</p>
-                </li>
-              )
-          })
-          }
-        </ul>
-      </div>
+      {isError ? <div>an error occured</div> : isLoading ? <Loading/> :
+      <>
+        <div>
+          <h2>Name:</h2>
+          <p>{genre.name}</p>
+        </div>
+        <Spacer y={1} />
+        <div>
+          <h2>Books:</h2>
+          <ul>
+            {
+            genre.books.map(({title, id}) => {
+                return(
+                  <li key={id}>
+                    <p>{title}</p>
+                  </li>
+                )
+            })
+            }
+          </ul>
+        </div>
+      </>
+      }
       <Divider />
       <Button style={{marginRight:"1.5vw"}} auto onClick={handler} type="error" ghost>Delete genre</Button>
       <Link href={`/catalog/genres/update/${genre.id}`}>
@@ -92,10 +102,10 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
    const ID = params.id
    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres/${ID}`)
-   const genre = await res.json()
+   const data = await res.json()
    return {
      props: {
-       genre,
+       data,
      },
    }
  }
