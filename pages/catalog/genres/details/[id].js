@@ -38,7 +38,7 @@ const Genre = ({ data }) => {
         <div>
           <h2>Books:</h2>
           <ul>
-            {
+            {genre.books && genre.books.length > 0 &&
             genre.books.map(({title, id}) => {
                 return(
                   <li key={id}>
@@ -60,14 +60,14 @@ const Genre = ({ data }) => {
       </Link>
 
       <Modal open={toggleModal} onClose={closeHandler}>
-        {genre.books.length > 0 ?
+        {genre.books && genre.books.length > 0 ?
         <>
           <Modal.Title>
             <Note type="warning">Delete the following books before deleting this genre</Note>
           </Modal.Title>
           <Modal.Content>
           <ul>
-            {genre.books.map((book) => {
+            {genre.books && genre.books.map((book) => {
               return <li key={book.id}>{book.title}</li> // you can add a link to each book if you want
             })}
           </ul>
@@ -82,7 +82,7 @@ const Genre = ({ data }) => {
         </>
         }
         <Modal.Action passive onClick={() => setToggleModal(false)}>Cancel</Modal.Action>
-        <Modal.Action disabled={genre.books.length > 0} onClick={DeleteGenre}>Confirm</Modal.Action>
+        <Modal.Action disabled={genre.books && genre.books.length > 0} onClick={DeleteGenre}>Confirm</Modal.Action>
       </Modal>
     </section>
   )
