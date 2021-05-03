@@ -30,7 +30,7 @@ export default function Genres({ data }) {
                         genre.books.map(({title, id}) => {
                           return(
                             <li key={id}>
-                              <Link href={`/catalog/books/${id}`}><a>{title}</a></Link>
+                              <Link href={`/catalog/books/details/${id}`}><a>{title}</a></Link>
                             </li>
                           )
                         }) 
