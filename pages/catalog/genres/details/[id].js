@@ -15,11 +15,11 @@ const Genre = () => {
   async function DeleteGenre() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres/${id}`,
     {
-       method:"DELETE",
-       headers: {
-          'Content-Type' : 'application/json'
-       },
-       body: null
+      method:"DELETE",
+      headers: {
+        'Content-Type' : 'application/json'
+      },
+      body: null
     })
     // const data = await res.json();
     setToggleModal(false)
@@ -38,51 +38,49 @@ const Genre = () => {
           <h2>Books:</h2>
           <ul>
             {genre.books && genre.books.length > 0 &&
-            genre.books.map(({title, id}) => {
-                return(
-                  <li key={id}>
-                    <p>{title}</p>
-                  </li>
-                )
-            })
+              genre.books.map(({title, id}) => {
+                  return(
+                    <li key={id}>
+                      <p>{title}</p>
+                    </li>
+                  )
+              })
             }
           </ul>
         </div>
-      </>
-      }
-      <Divider />
-      <Button style={{marginRight:"1.5vw"}} auto onClick={handler} type="error" ghost>Delete genre</Button>
-      <Link href={`/catalog/genres/update/${genre.id}`}>
-        <a>
-          <Button auto type="default">Update genre</Button>
-        </a>
-      </Link>
-
-      <Modal open={toggleModal} onClose={closeHandler}>
-        {genre.books && genre.books.length > 0 ?
-        <>
-          <Modal.Title>
-            <Note type="warning">Delete the following books before deleting this genre</Note>
-          </Modal.Title>
-          <Modal.Content>
-          <ul>
-            {genre.books && genre.books.map((book) => {
-              return <li key={book.id}>{book.title}</li> // you can add a link to each book if you want
-            })}
-          </ul>
-          </Modal.Content>
-        </>
-        :
-        <>
-          <Modal.Title>CONFIRM DELETE GENRE ?</Modal.Title>
-          <Modal.Content>
-            <p>this is an irreversible acction</p>
-          </Modal.Content>
-        </>
-        }
-        <Modal.Action passive onClick={() => setToggleModal(false)}>Cancel</Modal.Action>
-        <Modal.Action disabled={genre.books && genre.books.length > 0} onClick={DeleteGenre}>Confirm</Modal.Action>
-      </Modal>
+        <Divider />
+        <Button style={{marginRight:"1.5vw"}} auto onClick={handler} type="error" ghost>Delete genre</Button>
+        <Link href={`/catalog/genres/update/${genre.id}`}>
+          <a>
+            <Button auto type="default">Update genre</Button>
+          </a>
+        </Link>
+        <Modal open={toggleModal} onClose={closeHandler}>
+          {genre.books && genre.books.length > 0 ?
+          <>
+            <Modal.Title>
+              <Note type="warning">Delete the following books before deleting this genre</Note>
+            </Modal.Title>
+            <Modal.Content>
+            <ul>
+              {genre.books && genre.books.map((book) => {
+                return <li key={book.id}>{book.title}</li> // you can add a link to each book if you want
+              })}
+            </ul>
+            </Modal.Content>
+          </>
+          :
+          <>
+            <Modal.Title>CONFIRM DELETE GENRE ?</Modal.Title>
+            <Modal.Content>
+              <p>this is an irreversible acction</p>
+            </Modal.Content>
+          </>
+          }
+          <Modal.Action passive onClick={() => setToggleModal(false)}>Cancel</Modal.Action>
+          <Modal.Action disabled={genre.books && genre.books.length > 0} onClick={DeleteGenre}>Confirm</Modal.Action>
+        </Modal>
+      </>}
     </section>
   )
 }
