@@ -4,10 +4,9 @@ import { useRouter } from 'next/router'
 import { Divider, Button, Modal, Note, Spacer, Loading } from '@geist-ui/react'
 import useGenre from '@/hooks/useGenre'
 
-const Genre = ({ data }) => {
+const Genre = () => {
   const router = useRouter()
-  const { id } = router.query
-  const {genre, isError, isLoading} = useGenre(id)
+  const {genre, isError, isLoading} = useGenre(router.query.id)
   const [toggleModal, setToggleModal] = useState(false)
   const handler = () => setToggleModal(true)
   const closeHandler = () => {
@@ -90,22 +89,22 @@ const Genre = ({ data }) => {
 
 export default Genre
 
-export async function getStaticPaths() {
-   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres`)
-   const genres = await res.json()
-    const paths = genres.map((genre) => ({
-     params: { id: genre.id.toString() },
-   }))
-   return { paths, fallback: false }
- }
+// export async function getStaticPaths() {
+//    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres`)
+//    const genres = await res.json()
+//     const paths = genres.map((genre) => ({
+//      params: { id: genre.id.toString() },
+//    }))
+//    return { paths, fallback: false }
+//  }
 
-export async function getStaticProps({ params }) {
-   const ID = params.id
-   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres/${ID}`)
-   const data = await res.json()
-   return {
-     props: {
-       data,
-     },
-   }
- }
+// export async function getStaticProps({ params }) {
+//    const ID = params.id
+//    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres/${ID}`)
+//    const data = await res.json()
+//    return {
+//      props: {
+//        data,
+//      },
+//    }
+//  }
