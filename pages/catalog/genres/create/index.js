@@ -21,7 +21,7 @@ export default function CreateGenre() {
         }
     )
     //do something with the status
-    console.log("create genre", res.status)
+    // const status = res.status
     //redirect to all genres
     router.push('/catalog/genres')
    }

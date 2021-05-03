@@ -3,9 +3,9 @@ import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {Button, Loading, Spacer} from '@geist-ui/react'
 import { useForm } from 'react-hook-form'
-import useSWR from 'swr'
+import useBooks from '@/hooks/useBooks'
 
-export default function UpdateBookInstance({bookinstance}) {
+export default function UpdateBookInstance({ bookinstance }) {
   const BookInstanceStatus = [
     "Available",
     "Maintenance",
@@ -14,8 +14,7 @@ export default function UpdateBookInstance({bookinstance}) {
  ]
   const router = useRouter()
   const { id } = router.query
-  const fetcher = (...args) => fetch(...args).then(res => res.json())
-  const { data: books, error: book_error } = useSWR(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books`, fetcher)
+  const { books, isError, isLoading } = useBooks()
   const { register, handleSubmit, reset } = useForm({mode: "onChange"});
 
   useEffect(async () => {
@@ -23,7 +22,7 @@ export default function UpdateBookInstance({bookinstance}) {
     reset({
       status: bookinstance.status,
       imprint: bookinstance.imprint,
-      due_back: bookinstance.due_back,
+      due_back: bookinstance.due_back.substr(0, 10),
       book: bookinstance.book.id,
     });
   }, [reset])
@@ -44,7 +43,7 @@ export default function UpdateBookInstance({bookinstance}) {
         method: 'PUT'
       }
     )
-    router.push(`/catalog/bookinstances/${id}`)
+    router.push(`/catalog/bookinstances/details/${id}`)
   }
   return (
     <div>
@@ -57,7 +56,7 @@ export default function UpdateBookInstance({bookinstance}) {
          Update book instance
         </h1>
         <form id="bookinstance-form" onSubmit={handleSubmit(update)}>
-          {book_error ? <div>an error occured</div> : !books && !book_error ? <Loading/> : 
+          {isError ? <div>an error occured</div> : isLoading ? <Loading/> : 
            <div>
             <label htmlFor="book">Book Instance</label>
             <select type="text"  id="book" {...register("book")}>
@@ -122,5 +121,6 @@ export async function getStaticProps({ params }) {
     props: {
       bookinstance,
     },
+    revalidate: 5,
   }
 }

@@ -5,13 +5,13 @@ import { useState } from 'react'
 import useBook from '@/hooks/useBook'
 const Book = () => {
    const router = useRouter()
-   const [state, setState] = useState(false)
+   const [toggleModal, setToggleModal] = useState(false)
 
-   const { book, isError, isLoading } = useBook(router.query.id ? router.query.id : null)
+   const { book, isError, isLoading } = useBook(router.query.id)
 
-   const handler = () => setState(true)
+   const handler = () => setToggleModal(true)
    const closeHandler = (event) => {
-      setState(false)
+      setToggleModal(false)
    }
    async function DeleteBook() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/${router.query.id}`,
@@ -22,7 +22,7 @@ const Book = () => {
          },
          body: null
       })
-      setState(false)
+      setToggleModal(false)
       router.push(`/catalog/books`)
    }
   return (
@@ -82,7 +82,7 @@ const Book = () => {
                <Button auto type="default">Update book</Button>
             </a>
          </Link>
-         <Modal open={state} onClose={closeHandler}>
+         <Modal open={toggleModal} onClose={closeHandler}>
             {book.bookinstances.length > 0 ?
             <>
             <Modal.Title>
@@ -104,7 +104,7 @@ const Book = () => {
             <Modal.Subtitle>This action is ireversible</Modal.Subtitle>
             </>
             }
-            <Modal.Action passive onClick={() => setState(false)}>Cancel</Modal.Action>
+            <Modal.Action passive onClick={() => setToggleModal(false)}>Cancel</Modal.Action>
             <Modal.Action disabled={book.bookinstances.length > 0} onClick={DeleteBook}>Confirm</Modal.Action>
          </Modal>
       </div>

@@ -30,7 +30,7 @@ function UpdateGenre({ router, genre }) {
         }
     )
     const result = await res.json()
-    router.push(`/catalog/genres/${id}`)
+    router.push(`/catalog/genres/details/${id}`)
   }
   return (
     <div>

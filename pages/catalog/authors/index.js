@@ -33,7 +33,7 @@ export default function Authors({data}) {
                         {author.books.map(({title, id})=>{
                            return(
                               <li key={id}>
-                                 <Link href={`/catalog/books/${id}`}>
+                                 <Link href={`/catalog/books/details/${id}`}>
                                     <a>{title}</a>
                                  </Link>
                               </li>

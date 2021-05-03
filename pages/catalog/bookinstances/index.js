@@ -17,8 +17,6 @@ export default function Bookinstances({data}) {
         </h1>
         <Grid.Container gap={1}>{
             data.map((copie) => {
-              //dt.toLocaleString(DateTime.DATETIME_MED) //=> 'September 14, 3:21 AM'
-              // console.log(copie.due_back && DateTime.fromISO(copie.due_back).toLocaleString(DateTime.DATETIME_MED))
                return(
                 <Grid key={copie.id}>
                   <Card>

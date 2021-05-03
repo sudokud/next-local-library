@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Button, Loading, Spacer } from '@geist-ui/react'
@@ -10,14 +11,14 @@ export default function CreateBook() {
    const { authors, isError: isAuthorError, isLoading: authorsIsLoading } = useAuthors({initialData: null})
    const { genres, isError: isGenreError, isLoading: genresIsLoading } = useGenres()
    const { register, handleSubmit, reset } = useForm({mode: "onChange"});
-
+    const[ISBNError, setISBNError] = useState(false)
    async function createBook(data){
       const res = await fetch(
          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/books`,
          {
            body: JSON.stringify({
             title: data.title,
-            author: data.author.id,
+            author: data.author,
             summary: data.summary,
             genres: data.genre,
             ISBN: data.ISBN,
@@ -28,8 +29,13 @@ export default function CreateBook() {
            method: 'POST'
          }
       )
-      // const result = await res.json()
-      router.push(`/catalog/books/details/${router.query.id}`)
+      const result = await res.json()
+      if(res.status == 406){
+        setISBNError(true)
+      }
+      if(res.ok){
+        router.push(`/catalog/books/details/${result.id}`)
+      }
    }
   return (
     <div>
@@ -91,6 +97,13 @@ export default function CreateBook() {
            <div>
             <label htmlFor="ISBN">ISBN</label>
             <input type="text" name="ISBN" id="ISBN" {...register('ISBN')}/>
+            {ISBNError && 
+            <div style={{
+              fontSize:"12px",
+              padding:"8px",
+              color: "crimson"}}>
+                book with same ISBN already exist
+            </div>}
            </div>
            <Spacer y={2}/>
            <Button htmlType="submit" type="success" ghost>Submit</Button>

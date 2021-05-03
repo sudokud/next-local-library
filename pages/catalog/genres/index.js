@@ -48,6 +48,10 @@ export default function Genres({ data }) {
   )
 }
 
+
+// you can use getStaticProps with SWR to have a pre-rendered page
+// + dynamic content on the client with SWR
+// i'm using  getServerSideProps just to have a clear idea about the difference
 export async function getServerSideProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres`)
   const data = await res.json()
