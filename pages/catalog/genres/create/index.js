@@ -38,7 +38,7 @@ export default function CreateGenre() {
         <form id="genre-form" onSubmit={handleSubmit(createGenre)}>
           <div>
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" {...register("name")}/>
+            <input type="text" name="name" id="name" {...register("name", { required: true })}/>
           </div>
           <Spacer y={2}/>
           <Button type="success" htmlType="submit" ghost>Submit</Button>
