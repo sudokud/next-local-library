@@ -41,12 +41,25 @@ export default function CreateAuthors() {
         <form id="author-form" onSubmit={handleSubmit(createAuthor)}>
            <div>
             <label htmlFor="first_name">First name</label>
-            <input type="text" name="first_name" id="first_name" {...register("first_name")}/>
+            <input 
+              type="text" 
+              name="first_name" 
+              id="first_name" 
+              {...register("first_name",{ required: "required", minLength:{
+                value:4,
+                message:"at least 4 charaters"
+              }})}
+            />
            </div>
            <Spacer y={1}/>
            <div>
             <label htmlFor="family_name">family name</label>
-            <input type="text" name="family_name" id="family_name" {...register("first_name")}/>
+            <input type="text" name="family_name" id="family_name" 
+              {...register("family_name",{ required: "required", minLength:{
+                value:4,
+                message:"at least 4 charaters"
+              }})}
+            />
            </div>
            <Spacer y={1}/>
            <div>
