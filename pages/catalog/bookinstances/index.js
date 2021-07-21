@@ -1,4 +1,4 @@
-import { Card, Divider, Grid } from '@geist-ui/react'
+import { Card, Divider, Grid, Tag } from '@geist-ui/react'
 import Head from 'next/head'
 import Link from 'next/link'
 import {DateTime} from 'luxon'
@@ -38,6 +38,13 @@ export default function Bookinstances({data}) {
                )
             })
          }</Grid.Container>
+        <div style={{
+          position:"fixed",
+          right:9,
+          bottom:18,
+         }}>
+          <Tag type="warning" invert>Server-side Rendering</Tag>
+        </div>
       </section>
     </div>
   )
