@@ -7,7 +7,7 @@ function MyApp({ Component, pageProps }) {
     <GeistProvider>
       <CssBaseline />
       <AppNav />
-      <main style={{paddingLeft:"20vw"}}>
+      <main style={{padding:"0 9vw"}}>
         <Component {...pageProps} />
       </main>
     </GeistProvider>
