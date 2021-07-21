@@ -1,34 +1,17 @@
+*{
+  box-sizing: border-box;
+}
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-* {
-  box-sizing: border-box;
 }
 .main-section {
-  padding: 8vh 3vw;
+  padding: 13vh 2.5vw;
 }
-aside {
-  width:20vw;
-  position:fixed;
-  height:100%;
-  top: 0;
-  left: 0;
-  padding:10vh 3vw 0 0;
-}
-nav{
-  height: 100%;
-  border-right: 1px solid #eaeaea;
-  padding-left: 3vw;
-}
-
 form {
+  padding:0 9vw;
   padding-top:3vh;
-  width: 66%;
   margin: auto;
 }
 input:not([type="checkbox"]),
