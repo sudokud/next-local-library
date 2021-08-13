@@ -43,7 +43,7 @@ export default function Bookinstances({data}) {
           right:9,
           bottom:18,
          }}>
-          <Tag type="warning" invert>Server-side Rendering</Tag>
+          <Tag type="warning" invert>SSR</Tag>
         </div>
       </section>
     </div>
