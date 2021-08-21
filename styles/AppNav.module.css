@@ -1,0 +1,33 @@
+.fixedContainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: snow;
+}
+.flexContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    max-width: 990px;
+    margin: auto;
+    min-height: 58px;
+    height: auto;
+    padding-top:1.9vh 0;
+    border-bottom:1px solid lightgrey;
+}
+.navLink{
+    color:#696969;
+    text-decoration: none;
+    -webkit-transition: color 0.2s ease;
+    transition: color 0.2s ease;
+}
+.navLink:hover{
+    color:#000000;
+}
+.active.navLink {
+    color:#0070f3;
+    font-weight: bold;
+  }

@@ -1,75 +1,55 @@
 import React from 'react';
-import Link from 'next/link';
 import { ButtonDropdown } from '@geist-ui/react';
+import ActiveLink from './ActiveLink'
+import styles from '@/styles/AppNav.module.css'
 
-const classes = {
-fixedContainer:{
-   position: "fixed",
-   top: 0,
-   left: 0,
-   right: 0,
-   background: "snow"
-},
-flexContainer:{
-   display: "flex",
-   flexDirection:"row",
-   flexWrap:"wrap",
-   justifyContent:"space-between",
-   alignItems:"center",
-   maxWidth:"1000px",
-   margin:"auto",
-   minHeight:"58px",
-   paddingTop:"1.9vh 0",
-   borderBottom:"1px solid lightgrey"
-},
-}
 
 const AppNav = () => {
    return(
-      <div style={classes.fixedContainer}>
-         <nav style={classes.flexContainer}>
-            <Link href="/catalog" >
-               <a style={classes.link}>Home</a>
-            </Link>
+      <div className={styles.fixedContainer}>
+         <nav className={styles.flexContainer}>
+            <ActiveLink activeClassName={styles.active} href="/catalog" >
+               <a className={styles.navLink}>Home</a>
+            </ActiveLink>
          
-            <Link href="/catalog/books">
-               <a>Books</a>
-            </Link>
+            <ActiveLink activeClassName={styles.active} href="/catalog/books">
+               <a className={styles.navLink}>Books</a>
+            </ActiveLink>
          
-            <Link href="/catalog/authors">
-               <a>Authors</a>
-            </Link>
+            <ActiveLink activeClassName={styles.active} href="/catalog/authors">
+               <a className={styles.navLink}>Authors</a>
+            </ActiveLink>
          
-            <Link href="/catalog/genres">
-               <a>Genres</a>
-            </Link>
+            <ActiveLink activeClassName={styles.active} href="/catalog/genres">
+               <a className={styles.navLink}>Genres</a>
+            </ActiveLink>
          
-            <Link href="/catalog/bookinstances">
-               <a>Book Instances</a>
-            </Link>
+            <ActiveLink activeClassName={styles.active} href="/catalog/bookinstances">
+               <a className={styles.navLink}>Book Instances</a>
+            </ActiveLink>
             <ButtonDropdown size='small' type="success">
                <ButtonDropdown.Item main>
                   Add
                </ButtonDropdown.Item>
                <ButtonDropdown.Item>
-                  <Link href="/catalog/authors/create">
-                     <a>Author</a>
-                  </Link>
+                  <ActiveLink activeClassName={styles.active} href="/catalog/authors/create">
+                     <a className={styles.navLink}>Author</a>
+                  </ActiveLink>
                </ButtonDropdown.Item>
                <ButtonDropdown.Item>
-                  <Link href="/catalog/genres/create">
-                     <a>Genre</a>
-                  </Link>
+                  <ActiveLink activeClassName={styles.active} href="/catalog/genres/create">
+                     <a className={styles.navLink}>Genre</a>
+                  </ActiveLink>
                </ButtonDropdown.Item>
                <ButtonDropdown.Item>
-                  <Link href="/catalog/books/create">
-                     <a>Book</a>
-                  </Link>
+                  <ActiveLink activeClassName={styles.active} href="/catalog/books/create">
+                     <a className={styles.navLink}>Book</a>
+                  </ActiveLink>
                </ButtonDropdown.Item>
                <ButtonDropdown.Item>
-                  <Link href="/catalog/bookinstances/create">
-                     <a>Bookinstance</a>
-                  </Link>
+                  <ActiveLink activeClassName={styles.active} href="/catalog/bookinstances/create">
+                     <a className={styles.navLink}>Bookinstance</a>
+                  </ActiveLink>
                </ButtonDropdown.Item>
             </ButtonDropdown>
          </nav>
