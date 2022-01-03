@@ -1,10 +1,10 @@
 import { Card, Divider, Grid, Tag } from '@geist-ui/react'
 import Head from 'next/head'
 import Link from 'next/link'
-import {DateTime} from 'luxon'
+import { DateTime } from 'luxon'
 
 
-export default function Bookinstances({data}) {
+export default function Bookinstances({ bookinstances }) {
   return (
     <div>
       <Head>
@@ -16,14 +16,14 @@ export default function Bookinstances({data}) {
           Book instances (Copies)
         </h1>
         <Grid.Container gap={1}>{
-            data.map((copie) => {
-               return(
-                <Grid key={copie.id}>
-                  <Card>
+          bookinstances.data.map((copie) => {
+            return (
+              <Grid key={copie.id}>
+                <Card>
                   <h4>
                     <Link as={`/catalog/bookinstances/details/${copie.id}`} href='/catalog/bookinstances/details/[id]'>
                       <a>
-                        {copie.book ? copie.book.title : "copie has no book (bug)"}
+                        {copie.book ? copie.book.title : "copie has no book (considered as a bug)"}
                       </a>
                     </Link>
                   </h4>
@@ -33,16 +33,16 @@ export default function Bookinstances({data}) {
                   {copie.status !== 'Available' &&
                     <p>due back: {DateTime.fromISO(copie.due_back).toLocaleString(DateTime.DATETIME_MED)}</p>
                   }
-                  </Card>
-                </Grid>
-               )
-            })
-         }</Grid.Container>
+                </Card>
+              </Grid>
+            )
+          })
+        }</Grid.Container>
         <div style={{
-          position:"fixed",
-          right:9,
-          bottom:18,
-         }}>
+          position: "fixed",
+          right: 9,
+          bottom: 18,
+        }}>
           <Tag type="warning" invert>SSR</Tag>
         </div>
       </section>
@@ -51,16 +51,16 @@ export default function Bookinstances({data}) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/bookinstances`)
-  const data = await res.json()
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/book-instances`)
+  const bookinstances = await res.json()
 
-  if (!data) {
+  if (!bookinstances) {
     return {
       notFound: true,
     }
   }
 
   return {
-    props: {data}, // will be passed to the page component as props
+    props: { bookinstances }, // will be passed to the page component as props
   }
 }

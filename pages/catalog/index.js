@@ -20,16 +20,16 @@ export default function Home() {
           The library has the following record counts
         </Text>
         {
-        book_error || author_error || genre_error || copies_error || copies_available_error ? "An error has occurred."
-        : !books || !authors || !genres || !copies || !copies_available ? <Loading/>
-        :
-         <div>
-            <Text h4>Books: {books}</Text>
-            <Text h4>Authors: {authors}</Text>
-            <Text h4>Genres: {genres}</Text>
-            <Text h4>copies: {copies}</Text>
-            <Text h4>copies available: {copies_available}</Text>
-         </div>
+          book_error || author_error || genre_error || copies_error || copies_available_error ? "An error has occurred."
+            : !books || !authors || !genres || !copies || !copies_available ? <Loading />
+              :
+              <div>
+                <Text h4>Books: {books.data ? books.data : 'empty'}</Text>
+                {/* <Text h4>Authors: {authors}</Text>
+                <Text h4>Genres: {genres}</Text>
+                <Text h4>copies: {copies}</Text>
+                <Text h4>copies available: {copies_available}</Text> */}
+              </div>
         }
       </section>
     </div>

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { Card, Grid } from '@geist-ui/react'
-export default function Books({data, notFound}) {  
+export default function Books({ books, notFound }) {
   return (
     <div>
       <Head>
@@ -10,25 +10,30 @@ export default function Books({data, notFound}) {
       </Head>
       <section className="main-section">
         <h1>
-         Books
+          Books
         </h1>
         {notFound ? <div>not found</div> :
-        <Grid.Container gap={1}>{
-            data.map((book) => {
-               return(
-                 <Grid key={book.id}>
+          <Grid.Container gap={1}>{
+            books.data.map((book) => {
+              return (
+                <Grid key={book.id}>
                   <Card>
-                    <Link style={{ width: '100%'}} href="/catalog/books/details/[id]" as={`/catalog/books/details/${book.id}`} >
+                    <Link style={{ width: '100%' }} href="/catalog/books/details/[id]" as={`/catalog/books/details/${book.id}`} >
                       <a>
-                          <h4>{book.title}</h4>
+                        <h4>{book.attributes.title}</h4>
                       </a>
                     </Link>
-                    <p>author: {book.author.family_name} {book.author.first_name}</p>
+                    <p style={{ textDecoration: "underline" }}>
+                      by &nbsp;
+                      {book.attributes.author.data.attributes.first_name}
+                      &nbsp;
+                      {book.attributes.author.data.attributes.family_name}
+                    </p>
                   </Card>
-                 </Grid>
-               )
+                </Grid>
+              )
             })
-         }</Grid.Container>
+          }</Grid.Container>
         }
       </section>
     </div>
@@ -36,16 +41,15 @@ export default function Books({data, notFound}) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books/?_sort=updated_at:DESC`)
-  const data = await res.json()
-
-  if (!data) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/books?populate[]=author`)
+  const books = await res.json()
+  if (!books.data) {
     return {
       notFound: true,
     }
   }
 
   return {
-    props: {data}, // will be passed to the page component as props
+    props: { books }, // will be passed to the page component as props
   }
 }

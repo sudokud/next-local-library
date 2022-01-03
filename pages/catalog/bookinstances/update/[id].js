@@ -1,9 +1,9 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 import Head from 'next/head'
-import {useRouter} from 'next/router'
-import {Button, Loading, Spacer} from '@geist-ui/react'
+import { useRouter } from 'next/router'
+import { Button, Loading, Spacer } from '@geist-ui/react'
 import { useForm } from 'react-hook-form'
-import useBooks from '@/hooks/useBooks'
+import useBooks from '@/hooks/contentTypes/useBooks'
 
 export default function UpdateBookInstance({ bookinstance }) {
   const BookInstanceStatus = [
@@ -11,11 +11,11 @@ export default function UpdateBookInstance({ bookinstance }) {
     "Maintenance",
     "Loaned",
     "Reserved"
- ]
+  ]
   const router = useRouter()
   const { id } = router.query
   const { books, isError, isLoading } = useBooks()
-  const { register, handleSubmit, reset } = useForm({mode: "onChange"});
+  const { register, handleSubmit, reset } = useForm({ mode: "onChange" });
 
   useEffect(async () => {
     // reset
@@ -27,15 +27,15 @@ export default function UpdateBookInstance({ bookinstance }) {
     });
   }, [reset])
 
-  async function update(data){
+  async function update(data) {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_ENDPOINT}/bookinstances/${id}`,
       {
         body: JSON.stringify({
-        status: data.status,
-        imprint: data.value,
-        due_back: data.due_back,
-        book: data.book,
+          status: data.status,
+          imprint: data.value,
+          due_back: data.due_back,
+          book: data.book,
         }),
         headers: {
           'Content-Type': 'application/json'
@@ -53,48 +53,48 @@ export default function UpdateBookInstance({ bookinstance }) {
       </Head>
       <section className="main-section">
         <h1>
-         Update book instance
+          Update book instance
         </h1>
         <form id="bookinstance-form" onSubmit={handleSubmit(update)}>
-          {isError ? <div>an error occured</div> : isLoading ? <Loading/> : 
-           <div>
-            <label htmlFor="book">Book Instance</label>
-            <select type="text"  id="book" {...register("book")}>
-              {books.map((book) => {
-                return(
+          {isError ? <div>an error occured</div> : isLoading ? <Loading /> :
+            <div>
+              <label htmlFor="book">Book Instance</label>
+              <select type="text" id="book" {...register("book")}>
+                {books.map((book) => {
+                  return (
                     <option key={book.id} value={book.id}>
                       {book.title}
                     </option>
+                  )
+                })}
+              </select>
+            </div>
+          }
+          <Spacer y={1} />
+          <div>
+            <label htmlFor="status">Status</label>
+            <select type="text" id="status" {...register("status")}>
+              {BookInstanceStatus.map((status, id) => {
+                return (
+                  <option key={id} value={status}>
+                    {status}
+                  </option>
                 )
               })}
             </select>
-           </div>
-           }
-           <Spacer y={1}/>
-           <div>
-           <label htmlFor="status">Status</label>
-            <select type="text" id="status" {...register("status")}>
-            {BookInstanceStatus.map((status, id) => {
-               return(
-                  <option key={id} value={status}>
-                     {status}
-                  </option>
-               )
-            })}
-            </select>
-           </div>
-           <Spacer y={1}/>
-           <div>
+          </div>
+          <Spacer y={1} />
+          <div>
             <label htmlFor="imprint">Imprint</label>
-            <input type="text" id="imprint" {...register("imprint")}/>
-           </div>
-           <Spacer y={1}/>
-           <div>
+            <input type="text" id="imprint" {...register("imprint")} />
+          </div>
+          <Spacer y={1} />
+          <div>
             <label htmlFor="due_back">Due back</label>
-            <input type="date"  id="due_back" {...register("due_back")}/>
-           </div>
-           <Spacer y={2}/>
-           <Button htmlType="submit" type="success" ghost> Submit </Button>
+            <input type="date" id="due_back" {...register("due_back")} />
+          </div>
+          <Spacer y={2} />
+          <Button htmlType="submit" type="success" ghost> Submit </Button>
         </form>
       </section>
     </div>

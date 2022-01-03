@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 
 function UpdateGenre({ router, genre }) {
   let id = router.query.id
-  const { register, handleSubmit, reset } = useForm({mode: "onChange"});
+  const { register, handleSubmit, reset } = useForm({ mode: "onChange" });
 
   useEffect(async () => {
     reset({
@@ -15,19 +15,19 @@ function UpdateGenre({ router, genre }) {
   }, [reset])
 
   // function called when we submit our data
-  async function updateGenre(data){
-     console.log(data)
+  async function updateGenre(data) {
+    console.log(data)
     const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres/${id}`,
-        {
-          body: JSON.stringify({
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/genres/${id}`,
+      {
+        body: JSON.stringify({
           name: data.genre,
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          method: 'PUT'
-        }
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'PUT'
+      }
     )
     const result = await res.json()
     router.push(`/catalog/genres/details/${id}`)
@@ -40,7 +40,7 @@ function UpdateGenre({ router, genre }) {
       </Head>
       <section className="main-section">
         <h1>
-         Update Genre
+          Update Genre
         </h1>
         <form id="author-form" onSubmit={handleSubmit(updateGenre)}>
           <div>
